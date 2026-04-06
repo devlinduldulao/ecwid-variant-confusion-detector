@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="ecwid-app-id" content="">
+  <title>Variant Confusion Detector for Ecwid</title>
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+
+  <link rel="stylesheet" href="https://djqizrxa6f10j.cloudfront.net/ecwid-sdk/css/1.3.20/ecwid-app-ui.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://djqizrxa6f10j.cloudfront.net/ecwid-sdk/js/1.2.9/ecwid-app.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <article class="hero-card">
+        <p class="eyebrow">Merchant Dashboard</p>
+        <h1>Variant confusion detector for the Ecwid admin.</h1>
+        <p>This app scans your catalog structure inside the Ecwid dashboard and highlights products whose option trees are most likely to confuse shoppers. It does not track visitors, does not require your own database, and does not depend on a custom Node.js backend.</p>
+        <div class="badge-row">
+          <span id="connection-badge" class="badge badge-waiting">Waiting</span>
+          <span id="mode-badge" class="badge badge-outline">Preview mode</span>
+        </div>
+      </article>
+
+      <aside class="meta-card hero-card">
+        <div>
+          <p class="meta-label">Store</p>
+          <p id="store-meta" class="meta-value">Waiting for Ecwid connection</p>
+        </div>
+        <div>
+          <p class="meta-label">Status</p>
+          <div id="status-text" class="status">Preparing the merchant dashboard.</div>
+        </div>
+        <div>
+          <p class="meta-label">Last Scan</p>
+          <p id="last-scan" class="meta-value">Not yet scanned</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="preview-launcher panel">
+      <p class="preview-label">UI preview</p>
+      <h2>Preview the dashboard with fake merchant data.</h2>
+      <p class="preview-copy">This is the main demo button. Click it to simulate a realistic Ecwid merchant catalog before connecting a live store.</p>
+      <div class="preview-launcher-actions">
+        <button id="preview-center-button" class="button preview-center-button" type="button" data-preview-trigger>Preview sample dashboard</button>
+      </div>
+    </section>
+
+    <section class="controls-grid">
+      <article class="panel control-card">
+        <h2>Scan scope</h2>
+        <p>Keep the scan capped so the dashboard stays fast on larger catalogs.</p>
+        <label for="scan-limit">Products to scan
+          <input id="scan-limit" type="number" min="25" max="500" step="25">
+        </label>
+      </article>
+
+      <article class="panel control-card">
+        <h2>Risk threshold</h2>
+        <p>Only show products at or above this score in the priority table and CSV export.</p>
+        <label for="score-filter">Minimum score
+          <input id="score-filter" type="number" min="0" max="50" step="1">
+        </label>
+        <label class="checkbox-row" for="include-disabled">
+          <input id="include-disabled" type="checkbox">
+          Include disabled products in scans
+        </label>
+      </article>
+
+      <article class="panel control-card">
+        <h2>Actions</h2>
+        <p id="help-text">Add your Ecwid app ID and open this page inside the Ecwid admin iframe to scan a live store.</p>
+        <div class="actions">
+          <button id="refresh-button" class="button">Run scan</button>
+          <button id="preview-button" class="button button-secondary" type="button" data-preview-trigger>Preview sample dashboard</button>
+          <button id="export-button" class="button button-secondary" type="button">Export CSV</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="metrics-grid">
+      <article class="panel metric-card">
+        <p class="metric-label">Products analyzed</p>
+        <p id="metric-products" class="metric-value">0</p>
+      </article>
+      <article class="panel metric-card">
+        <p class="metric-label">Products above threshold</p>
+        <p id="metric-risk" class="metric-value">0</p>
+      </article>
+      <article class="panel metric-card">
+        <p class="metric-label">Urgent clean-up</p>
+        <p id="metric-urgent" class="metric-value">0</p>
+      </article>
+      <article class="panel metric-card">
+        <p class="metric-label">Average catalog risk</p>
+        <p id="metric-average" class="metric-value">0</p>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <h2>Priority products</h2>
+        <p>These are the catalog entries most likely to create friction because of excessive combinations, unclear option labels, or fragmented stock coverage.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Severity</th>
+                <th>Score</th>
+                <th>Variant depth</th>
+                <th>Top signals</th>
+                <th>Recommended fix</th>
+              </tr>
+            </thead>
+            <tbody id="risk-table-body"></tbody>
+          </table>
+        </div>
+        <p id="risk-empty" class="footer-note">No products have crossed the current threshold yet.</p>
+      </article>
+
+      <aside class="grid">
+        <article class="panel">
+          <h3>Catalog signal breakdown</h3>
+          <p>Counts below show how often each structural risk pattern appears across scanned products.</p>
+          <ul id="signals-list" class="list"></ul>
+        </article>
+
+        <article class="panel">
+          <h3>Recommended next moves</h3>
+          <p>Start with the cleanups that affect the most products.</p>
+          <ul id="recommendations-list" class="list"></ul>
+        </article>
+      </aside>
+    </section>
+  </main>
+
+  <script src="./catalog-analyzer.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
