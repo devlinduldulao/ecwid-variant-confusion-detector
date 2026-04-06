@@ -47,7 +47,7 @@ jobs:
           zip -rq "release-artifacts/variant-confusion-detector-ecwid-publishing-assets-${VERSION}.zip" assets/marketplace
 
       - name: Upload packaged artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-artifacts
           path: release-artifacts/*
