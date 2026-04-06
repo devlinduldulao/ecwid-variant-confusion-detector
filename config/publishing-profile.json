@@ -1,0 +1,40 @@
+{
+  "appName": "Variant Confusion Detector for Ecwid",
+  "tagline": "Merchant-facing catalog audit dashboard for Ecwid stores.",
+  "shortDescription": "Score variant confusion risk, detect unclear option names, and prioritize catalog cleanup without a production database or long-running backend.",
+  "category": "Store management / catalog quality / merchant tools",
+  "hostBaseUrl": "https://devlinduldulao.github.io/ecwid-variant-confusion-detector",
+  "businessName": "Configured marketplace publisher",
+  "supportEmail": "",
+  "supportResponseWindow": "Reply within 2 business days",
+  "supportTimezone": "UTC",
+  "supportUrl": "/public/support.html",
+  "privacyPolicyUrl": "/public/privacy.html",
+  "termsOfServiceUrl": "/public/terms.html",
+  "demoUrl": "/public/index.html",
+  "legalEffectiveDate": "2026-04-06",
+  "privacyContactBlurb": "Contact the support channel listed in the live marketplace listing for privacy requests.",
+  "termsWarrantyBlurb": "This app is provided as described in the active marketplace listing and any separate merchant agreement published with the app.",
+  "screenshots": [
+    "assets/marketplace/screenshot-preview-off.png",
+    "assets/marketplace/screenshot-preview-on.png",
+    "assets/marketplace/screenshot-controls-and-export.png"
+  ],
+  "assets": {
+    "iconSource": "assets/marketplace/icon.svg",
+    "iconPng128": "assets/marketplace/icon-128x128.png",
+    "iconPng256": "assets/marketplace/icon-256x256.png",
+    "iconPng512": "assets/marketplace/icon-512x512.png",
+    "listingBannerSource": "assets/marketplace/banner.svg",
+    "listingBannerPng1200": "assets/marketplace/banner-1200x675.png",
+    "listingBannerPng1600": "assets/marketplace/banner-1600x900.png"
+  },
+  "technicalNotes": {
+    "hosting": "Static HTTPS hosting",
+    "backendRequired": false,
+    "databaseRequired": false,
+    "redisRequired": false,
+    "primarySurface": "Merchant dashboard",
+    "storefrontBehavior": "Admin-only catalog audit tool with no storefront visitor injection"
+  }
+}
