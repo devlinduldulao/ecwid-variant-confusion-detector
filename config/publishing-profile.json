@@ -4,8 +4,8 @@
   "shortDescription": "Score variant confusion risk, detect unclear option names, and prioritize catalog cleanup without a production database or long-running backend.",
   "category": "Store management / catalog quality / merchant tools",
   "hostBaseUrl": "https://devlinduldulao.github.io/ecwid-variant-confusion-detector",
-  "businessName": "Configured marketplace publisher",
-  "supportEmail": "",
+  "businessName": "devlinduldulao",
+  "supportEmail": "devlinduldulao@gmail.com",
   "supportResponseWindow": "Reply within 2 business days",
   "supportTimezone": "UTC",
   "supportUrl": "/public/support.html",
@@ -26,6 +26,7 @@
     "iconPng256": "assets/marketplace/icon-256x256.png",
     "iconPng512": "assets/marketplace/icon-512x512.png",
     "listingBannerSource": "assets/marketplace/banner.svg",
+    "listingBannerPng1024": "assets/marketplace/banner-1024x538.png",
     "listingBannerPng1200": "assets/marketplace/banner-1200x675.png",
     "listingBannerPng1600": "assets/marketplace/banner-1600x900.png"
   },
