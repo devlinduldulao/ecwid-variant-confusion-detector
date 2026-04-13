@@ -408,7 +408,7 @@ test('re-runs the live scan when include disabled is toggled', async function ()
   }
 });
 
-test('uses persisted preview mode and toggles back to live data on demand', async function () {
+test('forces live mode when Ecwid is connected even if preview preference was persisted', async function () {
   const harness = await createHarness({
     metaAppId: 'app-live',
     localStorageValue: {
@@ -434,19 +434,18 @@ test('uses persisted preview mode and toggles back to live data on demand', asyn
   });
 
   try {
-    assert.equal(harness.tracker.fetchCalls.length, 0);
-    assert.equal(harness.document.getElementById('mode-badge').textContent, 'Preview mode');
-
-    harness.document.getElementById('preview-button').click();
-    await flushAsync();
-    await flushAsync();
-
     assert.equal(harness.tracker.fetchCalls.length, 2);
     assert.equal(harness.document.getElementById('mode-badge').textContent, 'Live Ecwid store');
     assert.equal(harness.document.getElementById('store-meta').textContent, 'Live Store');
 
     const stored = JSON.parse(harness.window.localStorage.getItem(STORAGE_KEY));
     assert.equal(stored.previewMode, false);
+
+    harness.document.getElementById('preview-button').click();
+    await flushAsync();
+    await flushAsync();
+
+    assert.equal(harness.document.getElementById('mode-badge').textContent, 'Preview mode');
   } finally {
     harness.close();
   }

@@ -24,6 +24,7 @@
           <span id="connection-badge" class="badge badge-waiting">Waiting</span>
           <span id="mode-badge" class="badge badge-outline">Preview mode</span>
         </div>
+        <button id="show-guide-button" class="button button-text" type="button" hidden>How to use this app</button>
       </article>
 
       <aside class="meta-card hero-card">
@@ -42,7 +43,50 @@
       </aside>
     </section>
 
-    <section class="preview-launcher panel">
+    <section id="onboarding-guide" class="onboarding-guide panel">
+      <div class="onboarding-header">
+        <div>
+          <p class="onboarding-eyebrow">Getting started</p>
+          <h2>How to use Variant Confusion Detector</h2>
+        </div>
+        <button id="dismiss-guide" class="button button-small button-secondary" type="button">Got it</button>
+      </div>
+      <div class="onboarding-steps">
+        <div class="onboarding-step">
+          <span class="step-number">1</span>
+          <div>
+            <strong>Install and open inside Ecwid admin</strong>
+            <p>This app runs as an Ecwid admin page. After installing from the App Market, open it from your admin menu. It connects to your store automatically — no database or paid services needed.</p>
+          </div>
+        </div>
+        <div class="onboarding-step">
+          <span class="step-number">2</span>
+          <div>
+            <strong>Your catalog is scanned automatically</strong>
+            <p>Once connected, the app reads your products and scores each one for variant confusion: too many combinations, vague option labels, or fragmented stock.</p>
+          </div>
+        </div>
+        <div class="onboarding-step">
+          <span class="step-number">3</span>
+          <div>
+            <strong>Review the priority table</strong>
+            <p>Products are ranked by risk score. The table shows which items need attention first, what the problems are, and what action to take.</p>
+          </div>
+        </div>
+        <div class="onboarding-step">
+          <span class="step-number">4</span>
+          <div>
+            <strong>Export a CSV report</strong>
+            <p>Download a spreadsheet of flagged products to share with your team or keep as a catalog audit record.</p>
+          </div>
+        </div>
+      </div>
+      <div class="onboarding-footer">
+        <p><strong>What about Preview mode?</strong> Preview fills the dashboard with fake sample data so you can explore the interface. When your store is connected, you see real data by default. Look for the data source indicator below the controls.</p>
+      </div>
+    </section>
+
+    <section id="preview-launcher" class="preview-launcher panel">
       <p class="preview-label">UI preview</p>
       <h2>Preview the dashboard with fake merchant data.</h2>
       <p class="preview-copy">This is the main demo button. Click it to simulate a realistic Ecwid merchant catalog before connecting a live store.</p>
@@ -82,6 +126,11 @@
         </div>
       </article>
     </section>
+
+    <div id="data-source-banner" class="data-source-banner" hidden>
+      <span class="data-source-dot"></span>
+      <span id="data-source-text" class="data-source-text"></span>
+    </div>
 
     <section class="metrics-grid">
       <article class="panel metric-card">

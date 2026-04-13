@@ -3,6 +3,7 @@
 
   var Analyzer = window.VariantConfusionCatalogAnalyzer;
   var STORAGE_KEY = 'variant-confusion-detector-ecwid-preferences';
+  var GUIDE_KEY = 'variant-confusion-detector-guide-dismissed';
   var APP_ID_PLACEHOLDER = 'replace-with-your-ecwid-app-id';
   var state = {
     app: null,
@@ -36,7 +37,13 @@
     riskTable: document.getElementById('risk-table-body'),
     riskEmpty: document.getElementById('risk-empty'),
     signalsList: document.getElementById('signals-list'),
-    recommendationsList: document.getElementById('recommendations-list')
+    recommendationsList: document.getElementById('recommendations-list'),
+    onboardingGuide: document.getElementById('onboarding-guide'),
+    showGuideButton: document.getElementById('show-guide-button'),
+    dismissGuideButton: document.getElementById('dismiss-guide'),
+    dataSourceBanner: document.getElementById('data-source-banner'),
+    dataSourceText: document.getElementById('data-source-text'),
+    previewLauncher: document.getElementById('preview-launcher')
   };
 
   if (!Analyzer) {
@@ -46,6 +53,7 @@
 
   bindEvents();
   syncPreferenceInputs();
+  initGuide();
   setStatus('Preparing the merchant dashboard.');
   updateChrome();
   boot();
@@ -54,6 +62,9 @@
     refs.refreshButton.addEventListener('click', function () {
       refreshAnalysis();
     });
+
+    refs.dismissGuideButton.addEventListener('click', dismissGuide);
+    refs.showGuideButton.addEventListener('click', showGuide);
 
     bindPreviewButtons();
 
@@ -140,7 +151,9 @@
         }
 
         state.ecwidPayload = payload;
-        state.isPreview = Boolean(state.preferences.previewMode);
+        state.isPreview = false;
+        state.preferences.previewMode = false;
+        persistPreferences();
         updateHelpText();
         refreshAnalysis();
       });
@@ -394,6 +407,8 @@
         ? (state.isPreview ? 'Hide sample dashboard' : 'Preview sample dashboard')
         : (state.isPreview ? 'Return to live dashboard' : 'Preview sample dashboard');
     });
+    refs.previewLauncher.hidden = liveDataAvailable;
+    updateDataSourceBanner();
   }
 
   function eachPreviewButton(callback) {
@@ -420,6 +435,64 @@
     refs.helpText.textContent = state.isPreview
       ? 'Preview mode is showing fake merchant data so the store owner can demo the dashboard without touching the live catalog.'
       : 'Live mode scores the connected Ecwid catalog. Use preview mode anytime to simulate the dashboard with fake data.';
+  }
+
+  function initGuide() {
+    var dismissed = false;
+    try { dismissed = window.localStorage.getItem(GUIDE_KEY) === '1'; } catch (e) { /* localStorage unavailable */ }
+    refs.onboardingGuide.hidden = dismissed;
+    refs.showGuideButton.hidden = !dismissed;
+  }
+
+  function dismissGuide() {
+    try { window.localStorage.setItem(GUIDE_KEY, '1'); } catch (e) { /* localStorage unavailable */ }
+    refs.onboardingGuide.hidden = true;
+    refs.showGuideButton.hidden = false;
+    resizeIframe();
+  }
+
+  function showGuide() {
+    try { window.localStorage.removeItem(GUIDE_KEY); } catch (e) { /* localStorage unavailable */ }
+    refs.onboardingGuide.hidden = false;
+    refs.showGuideButton.hidden = true;
+    resizeIframe();
+  }
+
+  function updateDataSourceBanner() {
+    var banner = refs.dataSourceBanner;
+    var text = refs.dataSourceText;
+    var hasReport = Boolean(state.report);
+    var live = canUseLiveData();
+
+    if (!hasReport && !state.isPreview) {
+      if (!live) {
+        banner.hidden = false;
+        banner.className = 'data-source-banner data-source-disconnected';
+        text.textContent = 'NOT CONNECTED \u2014 Open this app inside your Ecwid admin to scan your real store catalog.';
+      } else {
+        banner.hidden = true;
+      }
+      return;
+    }
+
+    banner.hidden = false;
+
+    if (!state.isPreview && state.lastError) {
+      banner.className = 'data-source-banner data-source-preview';
+      text.textContent = 'SCAN ERROR \u2014 Showing sample data as fallback. See the error message above.';
+      return;
+    }
+
+    if (state.isPreview) {
+      banner.className = 'data-source-banner data-source-preview';
+      text.textContent = 'SAMPLE DATA \u2014 You are viewing demo data. This is not your real catalog.';
+    } else if (live) {
+      banner.className = 'data-source-banner data-source-live';
+      text.textContent = 'LIVE DATA \u2014 Showing real metrics from ' + getProfileName() + '.';
+    } else {
+      banner.className = 'data-source-banner data-source-disconnected';
+      text.textContent = 'NOT CONNECTED \u2014 Open this app inside your Ecwid admin to scan your real store catalog.';
+    }
   }
 
   function canUseLiveData() {
